@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
@@ -16,9 +16,9 @@
     <div class="row">
         <div class="col-md-12">
             <nav class="navbar navbar-default navbar-light bg-light static-top navbar-dark bg-dark">
-                <div class="navbar-header">
-                    <a class="nav-link disabled text-white font-weight-bold" href="#">
-                        [[*{authUserName}]] With role: [[*{authUserRole}]]</a>
+                <div class="navbar-header" id = "navBarUser">
+<!--                    <a class="nav-link disabled text-white font-weight-bold" href="#">-->
+<!--                        [[*{authUserName}]] With role: [[*{authUserRole}]]</a>-->
                 </div>
                 <div class="navbar-form navbar-right">
                     <form name="logOut" th:action="@{/logout}" method="post">
@@ -92,5 +92,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+<script src="/static/js/userPageJS.js" th:src="@{../static/js/userPageJS.js}" type="text/javascript"></script>
 </body>
 </html>

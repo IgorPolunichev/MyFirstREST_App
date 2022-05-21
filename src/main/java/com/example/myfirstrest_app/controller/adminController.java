@@ -1,6 +1,5 @@
 package com.example.myfirstrest_app.controller;
 
-import com.example.myfirstrest_app.model.Role;
 import com.example.myfirstrest_app.model.User;
 import com.example.myfirstrest_app.service.RoleService;
 import com.example.myfirstrest_app.service.UserService;
@@ -11,7 +10,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/mainPage")
@@ -28,11 +27,9 @@ public class adminController {
     @GetMapping()
     public ModelAndView getMainPage(ModelMap modelMap) {
         User authUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        modelMap.addAttribute("authUserName", userService.getUserById(authUser.getId()).getUserName());
         modelMap.addAttribute("authUser", authUser);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("mainPageAdmin");
-//        modelAndView.addObject(modelMap);
         return modelAndView;
     }
 
@@ -42,7 +39,7 @@ public class adminController {
     }
 
     @GetMapping("api/allUsers")
-    public List<UserDetails> getAllUsers(){
+    public List<UserDetails> getAllUsers() {
         List<UserDetails> test = userService.listUsers();
         return test;
     }
@@ -60,7 +57,7 @@ public class adminController {
     }
 
     @PostMapping("api/users")
-    public ResponseEntity<User> addUser(@RequestBody User user){
+    public ResponseEntity<User> addUser(@RequestBody User user) {
         userService.saveUser(user);
         return ResponseEntity.ok().body(user);
     }
