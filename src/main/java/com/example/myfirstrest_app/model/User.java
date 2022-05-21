@@ -1,17 +1,19 @@
 package com.example.myfirstrest_app.model;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
 
 @Entity
 @Table(name = "table_user")
-public class User implements UserDetails {
+public class User implements UserDetails, Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "user_Age")
@@ -27,15 +29,16 @@ public class User implements UserDetails {
     @JoinTable(name = "user_role"
             , joinColumns = @JoinColumn(name = "user_id")
             , inverseJoinColumns =@JoinColumn(name = "role_id"))
-
-    private Set<Role> userRoles;
+    private
+    Set<Role> roles;
 
     public User(){}
 
-    public User(String userName, String password, Long age,  Set<Role> roles){
+    public User(String userName, String password, Long age, Set<Role> roles){
         this.password = password;
         this.userName = userName;
-        this.userRoles = roles;
+        this.roles = roles;
+        this.age = age;
     }
 
 
@@ -70,21 +73,34 @@ public class User implements UserDetails {
     }
 
     public Set<Role> getRoles() {
-        return userRoles;
+        return roles;
     }
 
-    public void setRole(Set<Role> role) {
-        this.userRoles = role;
+    public void setRole(Set<Role> roles) {
+        this.roles = roles;
     }
 
-    public void addRole(Role role){
-        userRoles.add(role);
+
+    public boolean equals(Object o){
+        if (this == o) return true;
+        if (o == null) return false;
+        if (this.getClass() != o.getClass()) {
+            return false;}
+        User user = (User) o;
+        return id == user.id
+                && (userName.equals(user.userName));
+    }
+
+    public int hashCode(){
+        return new HashCodeBuilder(17,37).append(id).toHashCode();
 
     }
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return userRoles;
+        return roles;
     }
 
     @Override

@@ -1,13 +1,15 @@
 package com.example.myfirstrest_app.model;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
 @Table(name = "table_roles")
-
 public class Role implements GrantedAuthority {
 
     @Id
@@ -17,14 +19,11 @@ public class Role implements GrantedAuthority {
     private String role;
 
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_role"
-            , joinColumns = @JoinColumn(name = "role_id")
-            , inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<User> users;
-
-
     public Role() {
+    }
+    public Role(Long id , String name){
+        this.role = name;
+        this.id = id;
     }
 
     public Role(String role) {
@@ -52,4 +51,21 @@ public class Role implements GrantedAuthority {
     public String getAuthority() {
         return role;
     }
+
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        if (this.getClass() != o.getClass()) {
+            return false;
+        }
+        Role role = (Role) o;
+        return id == role.id
+                && (role.equals(role.role));
+    }
+
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(id).toHashCode();
+    }
+
 }

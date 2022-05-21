@@ -15,9 +15,10 @@
     <div class="row">
         <div class="col-md-12">
             <nav class="navbar navbar-default navbar-light bg-light static-top navbar-dark bg-dark">
-                <div class="navbar-header">
-                    <a class="nav-link disabled text-white font-weight-bold" href="#">
-                        [[*{authUserName}]] With role: [[*{authUserRole}]]</a>
+                <div class="navbar-header" id= "navBarAdmin">
+<!--                    <a class="nav-link disabled text-white font-weight-bold" href="#">-->
+<!--                        [[*{authUserName}]] With role: [[*{authUserRole}]]-->
+<!--                    </a>-->
                 </div>
                 <div class="navbar-form navbar-right">
                     <form name="logOut" th:action="@{/logout}" method="post">
@@ -37,12 +38,12 @@
                                 <a class="nav-link active" id="v-pills-Admin-tab"
                                    data-toggle="pill" href="#v-pills-Admin"
                                    role="tab" aria-controls="v-pills-Admin"
-                                   aria-selected="true">Admin</a>
+                                   aria-selected="true"> Admin </a>
 
                                 <a class="nav-link" id="v-pills-User-tab"
                                    data-toggle="pill" href="#v-pills-User"
                                    role="tab" aria-controls="v-pills-User"
-                                   aria-selected="false">User</a>
+                                   aria-selected="false"> User </a>
                             </div>
                         </div>
 
@@ -57,7 +58,9 @@
 
                                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                                             <li class="nav-item">
-                                                <a class="nav-link active" id="allUser-tab" data-toggle="tab"
+                                                <a class="nav-link active"
+                                                   id="allUser-tab"
+                                                   data-toggle="tab"
                                                    href="#allUsers"
                                                    role="tab" aria-controls="home" aria-selected="true">All Users</a>
                                             </li>
@@ -65,7 +68,8 @@
                                                 <a class="nav-link" id="newUser-tab" data-toggle="tab"
                                                    href="#newUser"
                                                    role="tab" aria-controls="profile" aria-selected="false">
-                                                    New User</a>
+                                                    New User
+                                                </a>
                                             </li>
                                         </ul>
 
@@ -140,11 +144,14 @@
                                                                 <select name="role1" multiple class="form-control"
                                                                         id="exampleFormControlSelect2">
                                                                     <option selected value="0">without a role</option>
-                                                                    <option value="ROLE_USER">ROLE_USER</option>
-                                                                    <option value="ROLE_ADMIN">ROLE_ADMIN</option>
+                                                                    <option value= "1">ROLE_USER</option>
+                                                                    <option value= "2">ROLE_ADMIN</option>
                                                                 </select>
+
                                                             </div>
-                                                            <input type="submit" class="btn btn-primary addUserBtn"
+                                                            <input type="button"
+                                                                   id = "addUserBtn"
+                                                                   class="btn btn-primary addUserBtn"
                                                                    value="ADD NEW USER"/>
                                                     </div>
                                                     <div class="col-md-4">
@@ -158,7 +165,7 @@
 
                                 <div class="tab-pane fade" id="v-pills-User"
                                      role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                                    <h4>User</h4>
+                                    <h4> User </h4>
 
                                     <div class="col-sm-12">
                                         <table class="table table-striped shadow-sm p-3 mb-5 bg-white rounded">
@@ -278,9 +285,12 @@
                                 data-dismiss="modal">
                             Close
                         </button>
-                        <input class="btn btn-primary updateUserBtn"
-                               type="submit"
-                               value="Update!"/>
+                        <button class="btn btn-primary updateUserBtn"
+                               type="button"
+                               id = "updateBtn"
+                                data-dismiss="modal">
+                            Update!
+                        </button>
                     </div>
             </div>
         </div>

@@ -31,74 +31,53 @@ public class UserService implements UserDetailsService, MyUserService {
 
     @Override
     public void saveAdmin() {
-        Role userRole = new Role("ROLE_USER");
-        userRole.setId(1L);
-        if (myRoleRepo.findRoleByRole(userRole.getRole()) == null) {
-            myRoleRepo.save(userRole);
-        }
-        Role adminRole = new Role("ROLE_ADMIN");
-        adminRole.setId(2L);
-        if (myRoleRepo.findRoleByRole(adminRole.getRole()) == null) {
-            myRoleRepo.save(adminRole);
-        }
+        Role user = new Role("ROLE_USER");
+        user.setId(1L);
+        Role admin = new Role("ROLE_ADMIN");
+        admin.setId(2L);
+        myRoleRepo.save(user);
+        myRoleRepo.save(admin);
+        User user1 = new User( "user1", bCryptPasswordEncoder.encode("pass1"), 36L);
+        Set<Role> user1Rols = new HashSet<>();
+        user1Rols.add(user);
+        user1Rols.add(admin);
+        user1.setRole(user1Rols);
 
-        User user = new User("user1", bCryptPasswordEncoder.encode("pass1"), 36L);
-        Set<Role> userRols = new HashSet<>();
-        userRols.add(myRoleRepo.getById(2L));
-        userRols.add(myRoleRepo.getById(1L));
-        user.setRole(userRols);
-
-        if (myUserRepo.findByUserName(user.getUserName()) == null) {
-            myUserRepo.save(user);
-        }
+        myUserRepo.save(user1);
 
 
     }
 
     @Override
     public User getUserById(Long id) {
-        Optional<User> u  = myUserRepo.findById(id);
-        return u.get();
+        return myUserRepo.findById(id);
     }
+
     @Override
     public User getUserByName(String name) {
-       User u  = myUserRepo.findByUserName(name);
+        User u = myUserRepo.findByUserName(name);
         return u;
     }
 
     @Override
-    public List<User> listUsers() {
-        return myUserRepo.findAll();
+    public List<UserDetails> listUsers() {
+        return myUserRepo.listUser();
     }
 
     @Override
-    public User saveUser(User user) {
+    public void saveUser(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        return myUserRepo.save(user);
+        myUserRepo.save(user);
     }
 
     @Override
-    public void updateUser(Map<String, Object> userJSON) {
-        User user = getUserById(Long.parseLong(userJSON.get("id").toString()));
-        user.setUserName(userJSON.get("userName").toString());
-        user.setAge(Long.parseLong(userJSON.get("age").toString()));
-        user.setPassword(userJSON.get("password")
-                .toString().equals("")
-                ? user.getPassword()
-                : bCryptPasswordEncoder.encode(userJSON.get("password").toString()));
-        List<Object> roles = (List<Object>) userJSON.get("userRoles");
-        if (roles.get(0).toString().equals("ROLE_ADMIN")) {
-            Set<Role> role = new HashSet<>();
-            role.add(myRoleRepo.getById(2L));
-            user.setRole(role);
+    public void updateUser(User user) {
+        if (!user.getPassword().equals(getUserById(user.getId()).getPassword())) {
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        } else {
+            user.setPassword(getUserById(user.getId()).getPassword());
         }
-        if (roles.get(0).equals("ROLE_USER")) {
-            Set<Role> role = new HashSet<>();
-            role.add(myRoleRepo.getById(1L));
-            user.setRole(role);
-        }
-        myUserRepo.save(user);
-
+        myUserRepo.editUser(user);
     }
 
     @Override
@@ -130,6 +109,7 @@ public class UserService implements UserDetailsService, MyUserService {
         user1.setId(user.getId());
         return user1;
     }
+
     @Override
     public String decoding(String codingPass) {
         BCryptPasswordEncoder bc = new BCryptPasswordEncoder();

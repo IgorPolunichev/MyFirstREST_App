@@ -2,6 +2,7 @@ package com.example.myfirstrest_app.service;
 
 import com.example.myfirstrest_app.model.Role;
 import com.example.myfirstrest_app.repo.MyRoleRepo;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 @Service
